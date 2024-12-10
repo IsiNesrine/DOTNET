@@ -4,7 +4,7 @@ namespace mvc.Models;
 
 public enum Major
 {
-    CS, IT, MATH, OTHER
+    CS, IT, MATH, ANGLAIS, ASTRONOMIE, PHILOSOPHIE, PCSI
 }
 
 public class Student
