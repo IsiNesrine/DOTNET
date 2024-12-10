@@ -1,0 +1,50 @@
+@model Student
+
+@* Ceci est un commentaire en vue cshtml *@
+<h2>Ajouter un Nouvel Étudiant</h2>
+
+<form asp-action="Add" asp-controller="Student" method="post">
+    <div class="form-group">
+        <label asp-for="Firstname"></label>
+        <input asp-for="Firstname" class="form-control" />
+        <span asp-validation-for="Firstname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lastname"></label>
+        <input asp-for="Lastname" class="form-control" />
+        <span asp-validation-for="Lastname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Major"></label>
+        <select asp-for="Major" class="form-control" asp-items="Html.GetEnumSelectList<Major>()">
+            <option value="">-- Sélectionnez une spécialité --</option>
+        </select>
+        <span asp-validation-for="Major" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AdmissionDate"></label>
+        <input asp-for="AdmissionDate" class="form-control datepicker" />
+        <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter l'Étudiant</button>
+</form>
+
+<a asp-action="Index">Retour à la Liste</a>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1900:2015"
+            });
+        });
+    </script>
+}
