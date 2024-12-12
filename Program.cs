@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 builder.Services.AddIdentity<Teacher, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;

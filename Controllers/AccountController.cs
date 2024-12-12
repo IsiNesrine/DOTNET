@@ -84,13 +84,7 @@ public class AccountController : Controller
             return View(model);
         }
         var user = await _userManager.FindByEmailAsync(model.Email);
-        Console.WriteLine(model.Email);
-        Console.WriteLine(user.UserName);
         var result = await _signinManager.PasswordSignInAsync(user?.UserName!, model.Password, false, false);
-
-        Console.WriteLine(model.Password);
-
-        Console.WriteLine(result.Succeeded);
 
         if (result.Succeeded)
         {
