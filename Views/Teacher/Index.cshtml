@@ -5,39 +5,38 @@
 
 <p>Voici les infos de l'enseignant :</p>
 <ul>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Âge</th>
-                    <th>Matière</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Matière</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var teacher in Model)
             {
-                                    <tr>
-                                        <td>@teacher.Id</td>
-                                        <td>@teacher.Firstname @teacher.Lastname</td>
-                                        <td>@teacher.Age</td>
-                                        <td>@teacher.Major</td>
-                                        <td>
-                                            <a asp-action="ShowDetails" asp-route-id="@teacher.Id" class="me-2" title="Détails">
-                                                <i class="bi bi-info-square"></i>
-                                            </a>
-                                            <a asp-action="Edit" asp-route-id="@teacher.Id" class="btn btn-warning btn-sm me-2" title="Modifier">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <a asp-action="Delete" asp-route-id="@teacher.Id" class="text-danger" title="Supprimer">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                <tr>
+                    <td>@teacher.Id</td>
+                    <td>@teacher.Firstname @teacher.Lastname</td>
+                    <td>@teacher.Major</td>
+                    <td>
+                        <a asp-action="ShowDetails" asp-route-id="@teacher.Id" class="me-2" title="Détails">
+                            <i class="bi bi-info-square"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@teacher.Id" class="btn btn-warning btn-sm me-2"
+                            title="Modifier">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@teacher.Id" class="text-danger" title="Supprimer">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
             }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </ul>
 
 <a asp-area="" asp-controller="Teacher" asp-action="Add" class="btn btn-primary">Ajouter</a>

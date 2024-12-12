@@ -1,8 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<mvc.Models.Event>
+
+@{
+    ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <!-- Header avec le nom du campus et le slogan -->
+    <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-success">Uni'vert'sité</h1>
+        <p class="lead text-muted">Cultivez vos passions, partagez vos idées.</p>
+    </header>
+
+    <!-- Section des événements -->
+    <section class="mb-5">
+        <h2 class="text-center fw-bold mb-4">Prochains Événements</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-center text-muted">Aucun événement n'est prévu pour le moment.</p>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach (var eventItem in Model)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">@eventItem.Title</h5>
+                                <p class="card-text">@eventItem.Description.Substring(0, Math.Min(eventItem.Description.Length, 100))...</p>
+                                <p class="text-muted"><i class="bi bi-calendar"></i> @eventItem.EventDate.ToString("dd MMMM yyyy")</p>
+                                <p class="text-muted"><i class="bi bi-geo-alt"></i> @eventItem.Location</p>
+                                <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-primary">En savoir plus</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <!-- Boutons pour Sign In et Sign Up -->
+    <div class="text-center mt-5">
+        <a href="@Url.Action("Login", "Account")" class="btn btn-success btn-lg me-3">Connexion</a>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-outline-success btn-lg">Inscription</a>
+    </div>
 </div>

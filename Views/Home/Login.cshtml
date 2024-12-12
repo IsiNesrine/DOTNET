@@ -1,0 +1,36 @@
+@model mvc.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Connexion</h3>
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Entrez votre email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Mot de passe</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Entrez votre mot de passe" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe" />
+                            <label asp-for="RememberMe" class="form-check-label" for="rememberMe">Se souvenir de moi</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

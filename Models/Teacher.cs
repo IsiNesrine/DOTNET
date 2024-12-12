@@ -1,12 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+
 namespace mvc.Models;
 
-public class Teacher
+public class Teacher : IdentityUser
 {
-    public int Id { get; set; }
-    public string Firstname { get; set; }
-    public string Lastname { get; set; }
-    public int Age { get; set; }
+    public required string Firstname { get; set; }
+    public required string Lastname { get; set; }
+    [Required]
     public Major Major { get; set; }
-    public string Mail { get; set; }
-    public string Password { get; set; }
 }

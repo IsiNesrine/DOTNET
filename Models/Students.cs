@@ -9,18 +9,16 @@ public enum Major
 
 public class Student
 {
-
     public int Id { get; set; }
-
     [Required(ErrorMessage = "Le prénom est obligatoire.")]
     [StringLength(20, MinimumLength = 2)]
     [Display(Name = "Prénom")]
-    public string Firstname { get; set; }
+    public required string Firstname { get; set; }
 
     [Required(ErrorMessage = "Le nom de famille est obligatoire.")]
     [StringLength(20, MinimumLength = 2)]
     [Display(Name = "Nom")]
-    public string Lastname { get; set; }
+    public required string Lastname { get; set; }
 
     [Range(16, 100, ErrorMessage = "L'âge doit être compris entre 16 et 100 ans..")]
     [Required]
