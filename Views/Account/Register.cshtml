@@ -1,0 +1,76 @@
+@model mvc.Models.AccountViewModel
+
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center text-success fw-bold mb-4">Inscription</h2>
+                    <p class="text-center text-muted">Rejoignez Uni'vert'sité et découvrez nos événements enrichissants.
+                    </p>
+                    <form asp-controller="Account" asp-action="Register" method="post" class="mt-4">
+                        <!-- Firstname -->
+                        <div class="mb-3">
+                            <label asp-for="Firstname" class="form-label">Prénom</label>
+                            <input asp-for="Firstname" class="form-control" placeholder="Entrez votre prénom" />
+                            <span asp-validation-for="Firstname" class="text-danger"></span>
+                        </div>
+
+                        <!-- Lastname -->
+                        <div class="mb-3">
+                            <label asp-for="Lastname" class="form-label">Nom</label>
+                            <input asp-for="Lastname" class="form-control" placeholder="Entrez votre nom de famille" />
+                            <span asp-validation-for="Lastname" class="text-danger"></span>
+                        </div>
+
+                        <!-- Major -->
+                        <div class="mb-3">
+                            <label asp-for="Major" class="form-label">Spécialité</label>
+                            <select asp-for="Major" class="form-select">
+                                <option value="">-- Sélectionnez votre spécialité --</option>
+                                @foreach (var major in Enum.GetValues(typeof(mvc.Models.Major)))
+                                {
+                                    <option value="@major">@major</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Major" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" type="email" class="form-control"
+                                placeholder="Entrez votre adresse email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Mot de passe</label>
+                            <input asp-for="Password" type="password" class="form-control"
+                                placeholder="Choisissez un mot de passe" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirmed Password -->
+                        <div class="mb-3">
+                            <label asp-for="ConfirmedPassword" class="form-label">Confirmez le mot de passe</label>
+                            <input asp-for="ConfirmedPassword" type="password" class="form-control"
+                                placeholder="Confirmez votre mot de passe" />
+                            <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">S'inscrire</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

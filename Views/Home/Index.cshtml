@@ -39,10 +39,12 @@
             </div>
         }
     </section>
-
+@if (!User.Identity.IsAuthenticated)
+                {
     <!-- Boutons pour Sign In et Sign Up -->
     <div class="text-center mt-5">
         <a href="@Url.Action("Login", "Account")" class="btn btn-success btn-lg me-3">Connexion</a>
         <a href="@Url.Action("Register", "Account")" class="btn btn-outline-success btn-lg">Inscription</a>
     </div>
+    }
 </div>

@@ -22,6 +22,13 @@ builder.Services.AddIdentity<Teacher, IdentityRole>(options =>
     options.Password.RequiredLength = 8;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Redirection pour utilisateur
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Home/Index";
+});
 
 // builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 //     {
@@ -52,6 +59,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

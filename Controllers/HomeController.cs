@@ -6,20 +6,16 @@ using mvc.Models;
 
 public class HomeController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ApplicationDbContext context)
+    public HomeController(ILogger<HomeController> logger)
     {
-        _context = context;
+        _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-
-        var events = await _context.Events
-            .FromSqlRaw("SELECT TOP 3 * FROM Events WHERE EventDate >= GETDATE() ORDER BY EventDate ASC")
-            .ToListAsync();
-
-        return View(events);
+        return View();
     }
+
 }

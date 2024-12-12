@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
@@ -11,6 +12,14 @@ public class AccountController : Controller
     {
         _signinManager = signInManager;
         _userManager = userManager;
+    }
+
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult Register()
+    {
+        return View();
     }
 
     [HttpPost]
@@ -44,6 +53,52 @@ public class AccountController : Controller
         }
 
         return View(model);
+    }
 
+    [HttpGet]
+    public async Task<IActionResult> Logout()
+    {
+        await _signinManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult IndexAccount()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult Login(string? returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        return View();
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        Console.WriteLine(model.Email);
+        Console.WriteLine(user.UserName);
+        var result = await _signinManager.PasswordSignInAsync(user?.UserName!, model.Password, false, false);
+
+        Console.WriteLine(model.Password);
+
+        Console.WriteLine(result.Succeeded);
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        ModelState.AddModelError(string.Empty, "Erreur lors de la connexion");
+
+        return View(model);
     }
 }
