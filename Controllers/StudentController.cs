@@ -19,9 +19,7 @@ namespace mvc.Controllers
         public async Task<IActionResult> ShowDetails(int? id)
         {
             if (id == null) return NotFound();
-
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var student = _context.Accounts.Find(id);
             if (student == null) return NotFound();
 
             return View(student);
@@ -53,8 +51,7 @@ namespace mvc.Controllers
         {
             if (id == null) return NotFound();
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var student = _context.Accounts.Find(id);
             if (student == null) return NotFound();
 
             return View(student);
@@ -65,8 +62,8 @@ namespace mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            _context.Students.Remove(student);
+            var student = await _context.Accounts.FindAsync(id);
+            _context.Accounts.Remove(student);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -76,7 +73,7 @@ namespace mvc.Controllers
         {
             if (id == null) return NotFound();
 
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Accounts.FindAsync(id);
             if (student == null) return NotFound();
 
             return View(student);
@@ -87,7 +84,6 @@ namespace mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Student student)
         {
-            if (id != student.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -98,8 +94,7 @@ namespace mvc.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Id)) return NotFound();
-                    else throw;
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -108,13 +103,14 @@ namespace mvc.Controllers
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.Id == id);
+            var student = _context.Accounts.Find(id);
+            return _context.Accounts.Any(e => e.Id == student.Id);
         }
 
         // Get students
         public async Task<ActionResult> Index()
         {
-            return View(await _context.Students.ToListAsync());
+            return View(await _context.Accounts.ToListAsync());
         }
 
     }

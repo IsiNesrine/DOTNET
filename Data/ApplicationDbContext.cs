@@ -5,17 +5,22 @@ using mvc.Models;
 
 namespace mvc.Data;
 
-public class ApplicationDbContext : IdentityDbContext<Teacher>
+public class ApplicationDbContext : IdentityDbContext<Account>
 {
-    // Nous allons creer un dbset pour chaque table
-    // Dbset est une classe qui represente une table
-    // Elle permet de faire le mapping entre la table et la classe C#
-    // public DbSet<Teacher> Teachers { get; set; } on commente cette ligne car on a herité de IdentityDbContext<Teacher>
-    // c'est maintenant IdentityDbContext qui s'occupe de la table Teacher
-
-    public DbSet<Student> Students { get; set; }
-    public DbSet<Teacher> Teachers { get; set; }
+    public DbSet<Account> Accounts { get; set; }
     public DbSet<Event> Events { get; set; }
+    public DbSet<Inscription> Inscriptions { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<Account>(entity => { entity.ToTable("Accounts"); });
+        builder.Entity<Inscription>()
+    .HasOne(i => i.student)
+    .WithMany()
+    .HasForeignKey(i => i.StudentId);
+
+    }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

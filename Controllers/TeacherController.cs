@@ -15,14 +15,14 @@ public class TeacherController : Controller
 
     public ActionResult Index()
     {
-        var teachers = _context.Teachers;
+        var teachers = _context.Accounts;
         return View(teachers);
     }
     public async Task<IActionResult> ShowDetails(string? id)
     {
         if (id == null) return NotFound();
 
-        var teacher = await _context.Teachers
+        var teacher = await _context.Accounts
             .FirstOrDefaultAsync(m => m.Id == id);
         if (teacher == null) return NotFound();
 
@@ -55,7 +55,7 @@ public class TeacherController : Controller
     {
         if (id == null) return NotFound();
 
-        var teacher = await _context.Teachers
+        var teacher = await _context.Accounts
             .FirstOrDefaultAsync(m => m.Id == id);
         if (teacher == null) return NotFound();
 
@@ -67,8 +67,8 @@ public class TeacherController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var teacher = await _context.Teachers.FindAsync(id);
-        _context.Teachers.Remove(teacher);
+        var teacher = await _context.Accounts.FindAsync(id);
+        _context.Accounts.Remove(teacher);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
@@ -78,7 +78,7 @@ public class TeacherController : Controller
     {
         if (id == null) return NotFound();
 
-        var teacher = await _context.Teachers.FindAsync(id);
+        var teacher = await _context.Accounts.FindAsync(id);
         if (teacher == null) return NotFound();
 
         return View();
@@ -110,7 +110,7 @@ public class TeacherController : Controller
 
     private bool TeacherExists(string id)
     {
-        return _context.Teachers.Any(e => e.Id == id);
+        return _context.Accounts.Any(e => e.Id == id);
     }
 }
 

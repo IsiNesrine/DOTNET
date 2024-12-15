@@ -39,6 +39,17 @@
                             </select>
                             <span asp-validation-for="Major" class="text-danger"></span>
                         </div>
+                        <div class="mb-3">
+                            <label asp-for="UserType" class="form-label">Rang</label>
+                            <select asp-for="UserType" class="form-select">
+                                <option value="">-- Sélectionnez votre rang --</option>
+                                @foreach (var UserType in Enum.GetValues(typeof(mvc.Models.AllowedLevel)))
+                                {
+                                    <option value="@UserType">@UserType</option>
+                                }
+                            </select>
+                            <span asp-validation-for="UserType" class="text-danger"></span>
+                        </div>
 
                         <!-- Email -->
                         <div class="mb-3">

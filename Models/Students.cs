@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace mvc.Models;
 
@@ -7,24 +8,8 @@ public enum Major
     CS, IT, MATH, ANGLAIS, ASTRONOMIE, PHILOSOPHIE, PCSI
 }
 
-public class Student
+public class Student : Account
 {
-    public int Id { get; set; }
-    [Required(ErrorMessage = "Le prénom est obligatoire.")]
-    [StringLength(20, MinimumLength = 2)]
-    [Display(Name = "Prénom")]
-    public required string Firstname { get; set; }
-
-    [Required(ErrorMessage = "Le nom de famille est obligatoire.")]
-    [StringLength(20, MinimumLength = 2)]
-    [Display(Name = "Nom")]
-    public required string Lastname { get; set; }
-
-    [Range(16, 100, ErrorMessage = "L'âge doit être compris entre 16 et 100 ans..")]
-    [Required]
-    [Display(Name = "Âge")]
-    public int Age { get; set; }
-
     public double GPA { get; set; }
 
     [Required(ErrorMessage = "Veuillez sélectionner une spécialité.")]
@@ -34,5 +19,5 @@ public class Student
     [Required(ErrorMessage = "Veuillez sélectionner une date d'admission.")]
     [DataType(DataType.Date)]
     [Display(Name = "Date d'Admission")]
-    public DateTime AdmissionDate { get; set; }
+    public DateTime AdmissionDate { get; set; } = DateTime.Now;
 }

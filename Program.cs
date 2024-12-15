@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using mvc.Data;
 using mvc.Models;
+using mvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.AddIdentity<Teacher, IdentityRole>(options =>
+builder.Services.AddIdentity<Account, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
@@ -20,7 +21,9 @@ builder.Services.AddIdentity<Teacher, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 8;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+})
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Redirection pour utilisateur
 builder.Services.ConfigureApplicationCookie(options =>
@@ -36,7 +39,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 //     })
 //     .AddEntityFrameworkStores<IdentityDbContext>();
 
-// Configure the HTTP request pipeline.
+
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

@@ -5,10 +5,10 @@ using mvc.Models;
 
 public class AccountController : Controller
 {
-    private readonly SignInManager<Teacher> _signinManager;
-    private readonly UserManager<Teacher> _userManager;
+    private readonly SignInManager<Account> _signinManager;
+    private readonly UserManager<Account> _userManager;
 
-    public AccountController(SignInManager<Teacher> signInManager, UserManager<Teacher> userManager)
+    public AccountController(SignInManager<Account> signInManager, UserManager<Account> userManager)
     {
         _signinManager = signInManager;
         _userManager = userManager;
@@ -37,6 +37,7 @@ public class AccountController : Controller
             Firstname = model.Firstname,
             Lastname = model.Lastname,
             Major = model.Major,
+            UserType = model.UserType
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -77,22 +78,44 @@ public class AccountController : Controller
 
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return View(model);
         }
+
         var user = await _userManager.FindByEmailAsync(model.Email);
-        var result = await _signinManager.PasswordSignInAsync(user?.UserName!, model.Password, false, false);
+
+        if (user == null)
+        {
+            ModelState.AddModelError(string.Empty, "Aucun utilisateur trouvé avec cet email.");
+            return View(model);
+        }
+
+        var result = await _signinManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
 
         if (result.Succeeded)
         {
             return RedirectToAction("Index", "Home");
         }
 
-        ModelState.AddModelError(string.Empty, "Erreur lors de la connexion");
+
+        if (result.IsLockedOut)
+        {
+            ModelState.AddModelError(string.Empty, "Votre compte est verrouillé. Veuillez réessayer plus tard.");
+        }
+        else if (result.IsNotAllowed)
+        {
+            ModelState.AddModelError(string.Empty, "La connexion n'est pas autorisée. Veuillez vérifier votre compte.");
+        }
+        else
+        {
+            ModelState.AddModelError(string.Empty, "Email ou mot de passe incorrect.");
+        }
 
         return View(model);
     }
+
 }

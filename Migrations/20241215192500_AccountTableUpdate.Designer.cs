@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mvc.Data;
 
@@ -11,9 +12,11 @@ using mvc.Data;
 namespace mvc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241215192500_AccountTableUpdate")]
+    partial class AccountTableUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,11 +173,6 @@ namespace mvc.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -240,9 +238,7 @@ namespace mvc.Migrations
 
                     b.ToTable("Accounts", (string)null);
 
-                    b.HasDiscriminator().HasValue("Account");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("mvc.Models.Event", b =>
@@ -253,7 +249,7 @@ namespace mvc.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -319,7 +315,17 @@ namespace mvc.Migrations
                     b.Property<int>("Major")
                         .HasColumnType("int");
 
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("Students", (string)null);
+                });
+
+            modelBuilder.Entity("mvc.Models.Teacher", b =>
+                {
+                    b.HasBaseType("mvc.Models.Account");
+
+                    b.Property<int>("Major")
+                        .HasColumnType("int");
+
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -390,6 +396,24 @@ namespace mvc.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("student");
+                });
+
+            modelBuilder.Entity("mvc.Models.Student", b =>
+                {
+                    b.HasOne("mvc.Models.Account", null)
+                        .WithOne()
+                        .HasForeignKey("mvc.Models.Student", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("mvc.Models.Teacher", b =>
+                {
+                    b.HasOne("mvc.Models.Account", null)
+                        .WithOne()
+                        .HasForeignKey("mvc.Models.Teacher", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

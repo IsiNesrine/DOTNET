@@ -1,0 +1,111 @@
+@using mvc.Services
+@inject UserService UserService
+@model IEnumerable<mvc.Models.Event>
+
+@{
+    ViewData["Title"] = "Événements";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<div class="container mt-5">
+    <!-- Message de succès -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success fw-bold">Événements</h1>
+        @if (await UserService.IsTeacherAsync())
+        {
+            <a href="@Url.Action("Add", "Event")" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle"></i> Ajouter un événement
+            </a>
+        }
+    </div>
+
+    <!-- Liste des événements -->
+    @if (!Model.Any())
+    {
+        <p class="text-muted text-center">Aucun événement disponible pour le moment.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var eventItem in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@eventItem.Title</h5>
+                            <h6 class="card-subtitle text-muted mb-3">
+                                <i class="bi bi-calendar-event"></i> @eventItem.EventDate.ToString("dd MMMM yyyy")
+                            </h6>
+                            <p class="card-text">@eventItem.Description</p>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-geo-alt"></i> @eventItem.Location
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                            <a href="@Url.Action("ShowDetails", "Event", new { id = eventItem.Id })"
+                                class="btn btn-success btn-sm">
+                                <i class="bi bi-eye"></i> Détail
+                            </a>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (await UserService.IsTeacherAsync())
+                                {
+                                    <div>
+                                        <a href="@Url.Action("Update", "Event", new { id = eventItem.Id })"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="bi bi-pencil"></i> Modifier
+                                        </a>
+                                        <a href="@Url.Action("Delete", "Event", new { id = eventItem.Id })"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+                                            <i class="bi bi-trash"></i> Supprimer
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @if (await UserService.IsUserInscribedAsync(eventItem.Id))
+                                    {
+                                        <span class="text-success">Inscrit</span>
+                                        <form asp-action="Desinscription" asp-controller="Event" method="post" class="d-inline">
+                                            <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                <i class="bi bi-x-circle"></i> Se désinscrire
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="Inscription" asp-controller="Event" method="post" class="d-inline">
+                                            <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-check-circle"></i> S'inscrire
+                                            </button>
+                                        </form>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

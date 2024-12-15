@@ -1,0 +1,63 @@
+@model mvc.Models.Event
+
+@{
+    ViewData["Title"] = "Ajouter un événement";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center text-success fw-bold mb-4">Ajouter un événement</h2>
+                    <form asp-action="Add" method="post">
+                        <!-- Titre -->
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Titre</label>
+                            <input asp-for="Title" class="form-control" placeholder="Entrez le titre de l'événement" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"
+                                placeholder="Entrez une description de l'événement"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Date de l'événement -->
+                        <div class="mb-3">
+                            <label asp-for="EventDate" class="form-label">Date de l'événement</label>
+                            <input asp-for="EventDate" type="date" class="form-control" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+
+                        <!-- Localisation -->
+                        <div class="mb-3">
+                            <label asp-for="Location" class="form-label">Localisation</label>
+                            <input asp-for="Location" class="form-control"
+                                placeholder="Entrez le lieu de l'événement" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+
+                        <!-- Nombre maximal de participants -->
+                        <div class="mb-3">
+                            <label asp-for="MaxParticipants" class="form-label">Nombre maximal de participants</label>
+                            <input asp-for="MaxParticipants" type="number" class="form-control"
+                                placeholder="Entrez le nombre maximum de participants" />
+                            <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                        </div>
+
+                        <!-- Bouton d'ajout -->
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-plus-circle"></i> Ajouter l'événement
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

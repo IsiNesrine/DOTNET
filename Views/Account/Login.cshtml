@@ -10,6 +10,18 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h3 class="card-title text-center">Connexion</h3>
+
+                    <!-- Afficher les erreurs globales -->
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <p>@error.ErrorMessage</p>
+                            }
+                        </div>
+                    }
+
                     <form asp-action="Login" method="post">
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label">Email</label>
