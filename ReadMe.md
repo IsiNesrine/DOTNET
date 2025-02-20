@@ -114,3 +114,6 @@ Avant de commencer, assurez-vous d'avoir les logiciels suivants installés :
 Projet réalisé par Max-Yves Mastrodicasa.
 
 Ce projet est actuellement en cours de migration vers une solution basée sur Blazor.
+
+
+## Testing if everything is okay 
